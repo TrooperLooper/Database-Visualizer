@@ -27,6 +27,18 @@
   }
 }
 
+/* Animated edge styles */
+@keyframes dash {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
+
+.animated-edge {
+  stroke-dasharray: 8, 4;
+  animation: dash 2s linear infinite;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
