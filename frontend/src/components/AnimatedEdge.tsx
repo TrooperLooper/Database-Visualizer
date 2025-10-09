@@ -36,12 +36,6 @@ const AnimatedEdge: React.FC<EdgeProps> = ({
                 stroke-dashoffset: -12;
               }
             }
-            @keyframes flowDot {
-              0% { opacity: 0; }
-              20% { opacity: 1; }
-              80% { opacity: 1; }
-              100% { opacity: 0; }
-            }
             .animated-edge {
               stroke-dasharray: 8,4;
               animation: dash 2s linear infinite;
@@ -60,27 +54,6 @@ const AnimatedEdge: React.FC<EdgeProps> = ({
           stroke: "#000000",
         }}
         className="animated-edge"
-      />
-
-      {/* Flow direction indicators */}
-      <circle
-        cx={sourceX + (targetX - sourceX) * 0.3}
-        cy={sourceY + (targetY - sourceY) * 0.3}
-        r="3"
-        fill="#000000"
-        style={{
-          animation: "flowDot 3s ease-in-out infinite",
-        }}
-      />
-
-      <circle
-        cx={sourceX + (targetX - sourceX) * 0.7}
-        cy={sourceY + (targetY - sourceY) * 0.7}
-        r="2.5"
-        fill="#000000"
-        style={{
-          animation: "flowDot 3s ease-in-out infinite 1s",
-        }}
       />
 
       {label && (

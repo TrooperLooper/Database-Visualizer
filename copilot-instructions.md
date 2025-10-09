@@ -15,6 +15,7 @@ This guide will walk you through creating a modern web application that visualiz
   - Data: Vibrant colors for highlighting when viewing table contents
 - **Interactive Elements**: Click tables to view data, drag to rearrange, zoom and pan
 - **Responsive Design**: Works on desktop and tablet devices
+- it is forbidden to write CSS, we will use Tailwind CSS for styling
 
 ### Core Functionality
 

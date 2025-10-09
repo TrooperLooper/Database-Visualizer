@@ -114,7 +114,7 @@ export default function ConnectionForm({
                 required
                 value={config.host}
                 onChange={(e) => handleChange("host", e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:ring-opacity-60 focus:border-blue-500 !text-gray-900 !bg-white autofill:!bg-white autofill:!text-gray-900"
                 placeholder="localhost"
               />
             </div>
@@ -129,7 +129,7 @@ export default function ConnectionForm({
                 required
                 value={config.port}
                 onChange={(e) => handleChange("port", e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:ring-opacity-60 focus:border-blue-500 !text-gray-900 !bg-white autofill:!bg-white autofill:!text-gray-900"
                 placeholder="5432"
               />
             </div>
@@ -144,7 +144,7 @@ export default function ConnectionForm({
                 required
                 value={config.database}
                 onChange={(e) => handleChange("database", e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:ring-opacity-60 focus:border-blue-500 !text-gray-900 !bg-white autofill:!bg-white autofill:!text-gray-900"
                 placeholder="my_database"
               />
             </div>
@@ -159,7 +159,7 @@ export default function ConnectionForm({
                 required
                 value={config.username}
                 onChange={(e) => handleChange("username", e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:ring-opacity-60 focus:border-blue-500 !text-gray-900 !bg-white autofill:!bg-white autofill:!text-gray-900"
                 placeholder="postgres"
               />
             </div>
@@ -174,7 +174,7 @@ export default function ConnectionForm({
                 required
                 value={config.password}
                 onChange={(e) => handleChange("password", e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:ring-opacity-60 focus:border-blue-500 !text-gray-900 !bg-white autofill:!bg-white autofill:!text-gray-900"
                 placeholder="••••••••"
               />
             </div>
@@ -207,7 +207,7 @@ export default function ConnectionForm({
             <button
               type="submit"
               disabled={status.type === "connecting"}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white !bg-green-500 !bg-opacity-80 hover:!bg-green-600 hover:!bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed !border-none"
             >
               {status.type === "connecting" ? (
                 <>

@@ -1,5 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { X, RefreshCw, Database, AlertCircle } from "lucide-react";
+import {
+  X,
+  RefreshCw,
+  Database,
+  AlertCircle,
+  Hash,
+  Type,
+  Calendar,
+  CheckSquare,
+  Key,
+} from "lucide-react";
 import { api } from "../services/api";
 
 interface DataPanelProps {
@@ -177,8 +187,91 @@ const DataPanel: React.FC<DataPanelProps> = ({ tableName, onClose }) => {
   };
 
   const isIdColumn = (columnName: string) => {
-    const idPatterns = /^(id|.*_id)$/i;
+    // Enhanced ID pattern matching for numbered IDs like USER_ID, CATEGORY_ID
+    const idPatterns = /^(id|.*_id|.*_id[0-9]*|[a-z]+_?id[0-9]*)$/i;
     return idPatterns.test(columnName);
+  };
+
+  // Get data type icon based on inferred type
+  const getDataTypeIcon = (columnName: string, inferredType: string) => {
+    const isId = isIdColumn(columnName);
+    const isNumeric = inferredType === "integer" || inferredType === "number";
+
+    return (
+      <div className="flex items-center gap-1">
+        {/* Primary/Foreign key icon */}
+        {isId && <Key className="w-3 h-3 text-yellow-400" />}
+
+        {/* Data type icon */}
+        {inferredType === "boolean" && (
+          <CheckSquare className="w-3 h-3 text-green-400" />
+        )}
+        {isNumeric && <Hash className="w-3 h-3 text-blue-400" />}
+        {(inferredType === "date" || inferredType === "timestamp") && (
+          <Calendar className="w-3 h-3 text-purple-400" />
+        )}
+        {inferredType === "varchar" && !isId && (
+          <Type className="w-3 h-3 text-gray-400" />
+        )}
+      </div>
+    );
+  };
+
+  // Smart column width categorization
+  const getColumnWidth = (columnName: string, dataType: string) => {
+    const name = columnName.toLowerCase();
+    const type = dataType.toLowerCase();
+
+    // Narrow columns (60px) - IDs, flags, single chars, short codes
+    if (
+      // ID patterns - includes numbered IDs like USER_ID, CATEGORY_ID
+      /^(id|.*_id|.*_id[0-9]*|[a-z]+_?id[0-9]*)$/i.test(columnName) ||
+      // Boolean/flag patterns
+      /^(is_|has_|can_|should_|active|enabled|visible|deleted|archived)/.test(
+        name
+      ) ||
+      // Status and simple codes
+      /^(status|state|type|kind|flag|code)$/i.test(columnName) ||
+      // Data types
+      type.includes("boolean") ||
+      type.includes("bit") ||
+      // Short varchar
+      (type.includes("varchar") && type.match(/varchar\(([1-5])\)/))
+    ) {
+      return "60px";
+    }
+
+    // Wide columns (200px) - Emails, longer descriptions, URLs
+    if (
+      // Email patterns
+      /email|mail/.test(name) ||
+      // Description patterns
+      /description|desc|summary|title|subject|caption/.test(name) ||
+      // Address patterns
+      /address|location|url|link|path/.test(name) ||
+      // Name patterns for full names
+      /full_name|display_name|complete_name/.test(name) ||
+      // Medium text fields
+      (type.includes("varchar") && type.match(/varchar\(([1-9][0-9]{2,})\)/)) ||
+      type.includes("text")
+    ) {
+      return "200px";
+    }
+
+    // Extra large columns (300px) - Long content fields
+    if (
+      // Content patterns
+      /content|body|message|comment|note|review|feedback/.test(name) ||
+      // Large text types
+      type.includes("longtext") ||
+      type.includes("mediumtext") ||
+      (type.includes("varchar") && type.match(/varchar\(([5-9][0-9]{2,})\)/))
+    ) {
+      return "300px";
+    }
+
+    // Medium columns (120px) - Default for most fields
+    return "120px";
   };
 
   if (!tableName) return null;
@@ -209,11 +302,11 @@ const DataPanel: React.FC<DataPanelProps> = ({ tableName, onClose }) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
           <button
             onClick={loadTableData}
             disabled={loading}
-            className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors disabled:opacity-50"
+            className="p-1.5 !bg-transparent rounded-lg transition-colors disabled:opacity-50 !border-none"
             title="Refresh data"
           >
             <RefreshCw
@@ -223,7 +316,7 @@ const DataPanel: React.FC<DataPanelProps> = ({ tableName, onClose }) => {
 
           <button
             onClick={onClose}
-            className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors"
+            className="p-1.5 !bg-transparent rounded-lg transition-colors !border-none"
             title="Close panel"
           >
             <X className="w-5 h-5 text-white" />
@@ -264,30 +357,49 @@ const DataPanel: React.FC<DataPanelProps> = ({ tableName, onClose }) => {
                     <thead>
                       <tr className="bg-gray-600 border-b border-gray-500">
                         {data.length > 0 &&
-                          Object.keys(data[0]).map((column) => (
-                            <th
-                              key={column}
-                              className={`text-left p-3 font-bold text-white text-sm uppercase tracking-wide`}
-                              style={{ minWidth: "120px" }}
-                            >
-                              <div className="flex items-center gap-2">
-                                {column}
-                                {isIdColumn(column) && (
-                                  <svg
-                                    className="w-4 h-4 text-yellow-400"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                )}
-                              </div>
-                            </th>
-                          ))}
+                          Object.keys(data[0]).map((column) => {
+                            // Get the data type for this column from the first non-null value
+                            const sampleValue = data.find(
+                              (row) => row[column] !== null
+                            )?.[column];
+                            let inferredType = "varchar";
+
+                            if (typeof sampleValue === "boolean") {
+                              inferredType = "boolean";
+                            } else if (typeof sampleValue === "number") {
+                              inferredType = "integer";
+                            } else if (sampleValue instanceof Date) {
+                              inferredType = "date";
+                            } else if (
+                              typeof sampleValue === "string" &&
+                              sampleValue.match(
+                                /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/
+                              )
+                            ) {
+                              inferredType = "timestamp";
+                            }
+
+                            const columnWidth = getColumnWidth(
+                              column,
+                              inferredType
+                            );
+
+                            return (
+                              <th
+                                key={column}
+                                className={`text-left p-3 font-bold text-white text-sm uppercase tracking-wide`}
+                                style={{
+                                  width: columnWidth,
+                                  minWidth: columnWidth,
+                                }}
+                              >
+                                <div className="flex items-center gap-2">
+                                  {getDataTypeIcon(column, inferredType)}
+                                  <span>{column}</span>
+                                </div>
+                              </th>
+                            );
+                          })}
                       </tr>
                     </thead>
                     <tbody>
@@ -299,19 +411,39 @@ const DataPanel: React.FC<DataPanelProps> = ({ tableName, onClose }) => {
                           }`}
                         >
                           {Object.entries(row).map(
-                            ([columnName, value], cellIndex) => (
-                              <td
-                                key={cellIndex}
-                                className={`p-3 text-sm border-r border-gray-100 last:border-r-0 transition-colors ${
-                                  isIdColumn(columnName)
-                                    ? "bg-yellow-50 group-hover:bg-yellow-100"
-                                    : "group-hover:bg-blue-50"
-                                }`}
-                                style={{ minWidth: "120px" }}
-                              >
-                                {formatCellValue(value)}
-                              </td>
-                            )
+                            ([columnName, value], cellIndex) => {
+                              // Get the same width calculation as header
+                              const sampleValue = data.find(
+                                (r) => r[columnName] !== null
+                              )?.[columnName];
+                              const inferredType =
+                                typeof sampleValue === "boolean"
+                                  ? "boolean"
+                                  : typeof sampleValue === "number"
+                                  ? "integer"
+                                  : "varchar";
+                              const columnWidth = getColumnWidth(
+                                columnName,
+                                inferredType
+                              );
+
+                              return (
+                                <td
+                                  key={cellIndex}
+                                  className={`p-3 text-sm border-r border-gray-100 last:border-r-0 transition-colors ${
+                                    isIdColumn(columnName)
+                                      ? "bg-yellow-50 group-hover:bg-yellow-100"
+                                      : "group-hover:bg-blue-50"
+                                  }`}
+                                  style={{
+                                    width: columnWidth,
+                                    minWidth: columnWidth,
+                                  }}
+                                >
+                                  {formatCellValue(value)}
+                                </td>
+                              );
+                            }
                           )}
                         </tr>
                       ))}

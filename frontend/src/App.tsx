@@ -10,7 +10,6 @@ import {
   type EdgeChange,
   type Connection,
   Controls,
-  Background,
   MarkerType,
 } from "@xyflow/react";
 import {
@@ -224,83 +223,102 @@ function App() {
 
   // 🎨 Main application view (when connected)
   return (
-    <div className="w-screen h-screen flex flex-col">
-      {/* Header - Compact horizontal layout */}
-      <div className="bg-white shadow-sm border-b border-gray-200 px-6 py-3 flex-shrink-0">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3">
-              <Database className="w-6 h-6 text-blue-600" />
-              <h1 className="text-xl font-bold text-gray-800">
-                Database Visualizer
-              </h1>
-            </div>
-
-            {/* Connection Info */}
-            <div className="flex items-center gap-2 px-3 py-1 bg-green-50 rounded-full border border-green-200">
-              <Wifi className="w-4 h-4 text-green-600" />
-              <span className="text-sm font-medium text-green-700">
-                Connected to: {connectionConfig?.database}
-              </span>
-            </div>
-          </div>
-
-          {/* Disconnect Button */}
-          <button
-            onClick={handleDisconnect}
-            className="flex items-center gap-2 px-3 py-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 hover:scale-105 hover:shadow-lg border-2 border-red-600 hover:border-red-700 transition-all duration-200 text-sm font-medium"
+    <div className="w-screen h-screen relative bg-white">
+      {/* Header - Absolute positioned overlay */}
+      <div className="absolute top-0 left-0 z-10 p-4">
+        <div
+          className="bg-white/95 backdrop-blur-sm shadow-lg rounded-xl border border-gray-200 px-6 py-4 w-fit ml-0 origin-top-left transform-gpu"
+          style={{
+            transform: "scale(0.7)",
+          }}
+        >
+          {/* Three column layout with fixed pixel widths */}
+          <div
+            className="grid gap-0"
+            style={{ gridTemplateColumns: "120px 550px 250px" }}
           >
-            <LogOut className="w-4 h-4" />
-            Disconnect
-          </button>
-        </div>
-
-        {/* Button Row */}
-        <div className="mt-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <button className="flex items-center gap-1.5 px-3 py-1.5 bg-green-600 text-white rounded-md hover:bg-green-700 hover:scale-105 hover:shadow-md border-2 border-green-600 hover:border-green-700 transition-all duration-200 text-xs font-medium">
-              <FileDown className="w-3.5 h-3.5" />
-              Export
-            </button>
-
-            <button className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-600 text-white rounded-md hover:bg-gray-700 hover:scale-105 hover:shadow-md border-2 border-gray-600 hover:border-gray-700 transition-all duration-200 text-xs font-medium">
-              <Settings className="w-3.5 h-3.5" />
-              Settings
-            </button>
-
-            <button
-              onClick={loadDatabaseSchema}
-              disabled={isLoadingSchema}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 hover:scale-105 hover:shadow-md border-2 border-blue-600 hover:border-blue-700 transition-all duration-200 text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-            >
-              <RefreshCw
-                className={`w-3.5 h-3.5 ${
-                  isLoadingSchema ? "animate-spin" : ""
-                }`}
-              />
-              {isLoadingSchema ? "Loading..." : "Refresh Schema"}
-            </button>
-          </div>
-
-          {/* Status Messages */}
-          <div className="flex gap-2">
-            {apiTestResult && (
-              <div className="text-xs px-2 py-1 bg-green-100 rounded border border-green-200 text-green-700">
-                {apiTestResult}
+            {/* Column 1: Database symbol (triple size, 20px padding) */}
+            <div className="flex flex-col justify-between h-full px-2">
+              <div className="flex items-center pt-4 ml-4">
+                <Database className="w-15 h-15 text-blue-600" />
               </div>
-            )}
+              <div></div> {/* Empty bottom */}
+            </div>
 
-            {schemaError && (
-              <div className="text-xs px-2 py-1 bg-red-100 rounded border border-red-200 text-red-700">
-                {schemaError}
+            {/* Column 2: Header text with line break (top), buttons (bottom) */}
+            <div className="flex flex-col gap-4 items-start ml-0">
+              <div className="pt-2.5">
+                <h1 className="text-lg font-bold text-gray-800">
+                  Database
+                  <br />
+                  Visualizer
+                </h1>
               </div>
-            )}
+              <div className="flex items-center gap-4">
+                {/* Status Message */}
+                {apiTestResult && (
+                  <div className="text-xs !px-5 !py-0.5 bg-green-100 rounded border border-green-200 text-green-700">
+                    {apiTestResult}
+                  </div>
+                )}
+
+                {schemaError && (
+                  <div className="text-xs !px-1.5 !py-0.5 bg-red-100 rounded border border-red-200 text-red-700">
+                    {schemaError}
+                  </div>
+                )}
+
+                {/* Orange action buttons */}
+                <div className="flex items-center gap-2 ml-4">
+                  <button className="flex items-center gap-1 !px-1.5 !py-0.5 !bg-orange-500 !text-white rounded hover:!bg-orange-600 transition-colors text-xs font-medium !border-none">
+                    <FileDown className="w-3 h-3" />
+                    Export
+                  </button>
+
+                  <button className="flex items-center gap-1 !px-1.5 !py-0.5 !bg-orange-500 !text-white rounded hover:!bg-orange-600 transition-colors text-xs font-medium !border-none">
+                    <Settings className="w-3 h-3" />
+                    Settings
+                  </button>
+
+                  <button
+                    onClick={loadDatabaseSchema}
+                    disabled={isLoadingSchema}
+                    className="flex items-center gap-1 !px-1.5 !py-0.5 !bg-orange-500 !text-white rounded hover:!bg-orange-600 transition-colors text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed !border-none"
+                  >
+                    <RefreshCw
+                      className={`w-3 h-3 ${
+                        isLoadingSchema ? "animate-spin" : ""
+                      }`}
+                    />
+                    {isLoadingSchema ? "Loading..." : "Refresh"}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Column 3: Connected button (top), Disconnect button (bottom) */}
+            <div className="flex flex-col justify-between items-center h-full mt-2 mr-2">
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 rounded-full border border-green-200 pt-2 mt-5">
+                <Wifi className="w-3 h-3 text-green-600" />
+                <span className="text-xs font-medium text-green-700">
+                  Connected to: {connectionConfig?.database}
+                </span>
+              </div>
+
+              <button
+                onClick={handleDisconnect}
+                className="flex items-center justify-center gap-1 !px-1.5 !py-0.5 !bg-red-500 !text-white rounded hover:!bg-red-600 transition-colors text-xs font-medium !border-none self-center mb-3.5"
+              >
+                <LogOut className="w-3 h-3" />
+                Disconnect
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Main content area */}
-      <div className="flex-1 relative">
+      {/* Main content area - Full screen */}
+      <div className="absolute inset-0">
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -311,10 +329,10 @@ function App() {
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
           fitView
-          className="bg-gray-50"
+          fitViewOptions={{ padding: 0.1, maxZoom: 1.5, minZoom: 0.1 }}
+          className="bg-white bg-dot-pattern"
         >
-          <Background color="#e5e7eb" gap={20} />
-          <Controls className="!bg-white !border-2 !border-gray-300 !shadow-lg" />
+          <Controls className="!bg-white !border-2 !border-gray-300 !shadow-lg [&_svg]:!fill-gray-800 [&_svg]:!stroke-gray-800 !bottom-20" />
         </ReactFlow>
 
         {/* 🎯 Data Panel - shows when table is selected */}
