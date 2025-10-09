@@ -11,14 +11,7 @@ import {
   type Connection,
   Controls,
 } from "@xyflow/react";
-import {
-  Database,
-  FileDown,
-  RefreshCw,
-  Settings,
-  Wifi,
-  LogOut,
-} from "lucide-react";
+import { Database, Wifi, LogOut } from "lucide-react";
 import { api, type DatabaseConfig, type SchemaResponse } from "./services/api";
 import { ForeignKeyList, type ForeignKey } from "./components/ForeignKeyList";
 import { extractForeignKeys } from "./utils/foreignKeyUtils";
@@ -61,7 +54,6 @@ function App() {
   const [apiTestResult, setApiTestResult] = useState<string>("");
 
   // 📊 Schema state management
-  const [isLoadingSchema, setIsLoadingSchema] = useState(false);
   const [schemaError, setSchemaError] = useState<string>("");
 
   // 🎯 Data panel state management
@@ -87,7 +79,6 @@ function App() {
   // 📊 Load and visualize database schema
   const loadDatabaseSchema = async () => {
     console.log("🔄 Loading database schema...");
-    setIsLoadingSchema(true);
     setSchemaError("");
 
     try {
@@ -113,8 +104,6 @@ function App() {
       setSchemaError(
         "Failed to load database schema: " + (error as Error).message
       );
-    } finally {
-      setIsLoadingSchema(false);
     }
   };
 
@@ -231,7 +220,7 @@ function App() {
           {/* Three column layout with fixed pixel widths */}
           <div
             className="grid gap-0"
-            style={{ gridTemplateColumns: "120px 550px 250px" }}
+            style={{ gridTemplateColumns: "120px 300px 250px" }}
           >
             {/* Column 1: Database symbol (triple size, 20px padding) */}
             <div className="flex flex-col justify-between h-full px-2">
@@ -264,31 +253,7 @@ function App() {
                   </div>
                 )}
 
-                {/* Orange action buttons */}
-                <div className="flex items-center gap-2 ml-4">
-                  <button className="flex items-center gap-1 !px-1.5 !py-0.5 !bg-orange-500 !text-white rounded hover:!bg-orange-600 transition-colors text-xs font-medium !border-none">
-                    <FileDown className="w-3 h-3" />
-                    Export
-                  </button>
-
-                  <button className="flex items-center gap-1 !px-1.5 !py-0.5 !bg-orange-500 !text-white rounded hover:!bg-orange-600 transition-colors text-xs font-medium !border-none">
-                    <Settings className="w-3 h-3" />
-                    Settings
-                  </button>
-
-                  <button
-                    onClick={loadDatabaseSchema}
-                    disabled={isLoadingSchema}
-                    className="flex items-center gap-1 !px-1.5 !py-0.5 !bg-orange-500 !text-white rounded hover:!bg-orange-600 transition-colors text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed !border-none"
-                  >
-                    <RefreshCw
-                      className={`w-3 h-3 ${
-                        isLoadingSchema ? "animate-spin" : ""
-                      }`}
-                    />
-                    {isLoadingSchema ? "Loading..." : "Refresh"}
-                  </button>
-                </div>
+                {/* ...orange action buttons removed... */}
               </div>
             </div>
 
@@ -313,8 +278,9 @@ function App() {
         </div>
       </div>
 
+
       {/* Foreign Key List Card - Top right, always visible */}
-      <div style={{ position: 'absolute', top: 24, right: 12, zIndex: 50 }}>
+      <div style={{ position: "absolute", top: 24, right: 12, zIndex: 50 }}>
         <ForeignKeyList foreignKeys={foreignKeys} />
       </div>
 

@@ -14,7 +14,7 @@ export default function ConnectionForm({
   // 🏗️ Form state management
   const [config, setConfig] = useState<DatabaseConfig>({
     host: "localhost",
-    port: "5432",
+    port: "5433",
     database: "",
     username: "",
     password: "",
@@ -130,7 +130,7 @@ export default function ConnectionForm({
                 value={config.port}
                 onChange={(e) => handleChange("port", e.target.value)}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:ring-opacity-60 focus:border-blue-500 !text-gray-900 !bg-white autofill:!bg-white autofill:!text-gray-900"
-                placeholder="5432"
+                placeholder="5433"
               />
             </div>
 

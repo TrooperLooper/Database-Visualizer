@@ -141,9 +141,7 @@ const DataPanel: React.FC<DataPanelProps> = ({ tableName, onClose }) => {
 
     if (value instanceof Date) {
       return (
-        <span className="text-purple-600 text-xs">
-          {value.toLocaleString()}
-        </span>
+        <span className="text-red-600 text-xs">{value.toLocaleString()}</span>
       );
     }
 
@@ -153,7 +151,7 @@ const DataPanel: React.FC<DataPanelProps> = ({ tableName, onClose }) => {
       value.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)
     ) {
       return (
-        <span className="text-purple-600 text-xs">
+        <span className="text-red-600 text-xs">
           {new Date(value).toLocaleString()}
         </span>
       );
@@ -209,7 +207,7 @@ const DataPanel: React.FC<DataPanelProps> = ({ tableName, onClose }) => {
         )}
         {isNumeric && <Hash className="w-3 h-3 text-blue-400" />}
         {(inferredType === "date" || inferredType === "timestamp") && (
-          <Calendar className="w-3 h-3 text-purple-400" />
+          <Calendar className="w-3 h-3 text-red-400" />
         )}
         {inferredType === "varchar" && !isId && (
           <Type className="w-3 h-3 text-gray-400" />

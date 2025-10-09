@@ -62,7 +62,7 @@ const getDataTypeIcon = (dataType: string) => {
     return <Key className="w-3 h-3 text-yellow-600" />;
   }
   if (dataType.includes("varchar") || dataType.includes("text")) {
-    return <span className="text-xs font-bold text-blue-600">T</span>;
+    return <span className="text-xs font-bold text-gray-600">T</span>;
   }
   if (dataType.includes("int") || dataType.includes("numeric")) {
     return <span className="text-xs font-bold text-green-600">#</span>;
@@ -73,7 +73,8 @@ const getDataTypeIcon = (dataType: string) => {
   if (dataType.includes("timestamp") || dataType.includes("date")) {
     return <span className="text-xs font-bold text-orange-600">D</span>;
   }
-  return <span className="text-xs font-bold text-gray-600">?</span>;
+  // Default: show gray T for unknown types
+  return <span className="text-xs font-bold text-gray-600">T</span>;
 };
 
 // Assign colors based on table name patterns
