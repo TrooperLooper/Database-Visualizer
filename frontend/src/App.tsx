@@ -10,7 +10,6 @@ import {
   type EdgeChange,
   type Connection,
   Controls,
-  MarkerType,
 } from "@xyflow/react";
 import {
   Database,
@@ -161,12 +160,6 @@ function App() {
       target: rel.target_table,
       type: "animatedEdge",
       animated: false,
-      markerEnd: {
-        type: MarkerType.ArrowClosed,
-        width: 25,
-        height: 25,
-        color: "#000000",
-      },
       label: `${rel.source_column} → ${rel.target_column}`,
       style: {
         strokeWidth: 3,

@@ -9,6 +9,7 @@ import {
   Calendar,
   CheckSquare,
   Key,
+  Table,
 } from "lucide-react";
 import { api } from "../services/api";
 
@@ -288,8 +289,8 @@ const DataPanel: React.FC<DataPanelProps> = ({ tableName, onClose }) => {
       <div
         className={`${headerGradient} text-white p-4 flex justify-between items-center rounded-t-xl`}
       >
-        <div className="flex items-center gap-3">
-          <Database className="w-6 h-6" />
+        <div className="flex items-start gap-3">
+          <Table className="w-6 h-6 mt-2" />
           <div>
             <h2 className="text-xl font-bold">{tableName}</h2>
             <p className="text-sm opacity-90">
@@ -302,24 +303,24 @@ const DataPanel: React.FC<DataPanelProps> = ({ tableName, onClose }) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-0.5">
+        <div className="flex items-center">
           <button
             onClick={loadTableData}
             disabled={loading}
-            className="p-1.5 !bg-transparent rounded-lg transition-colors disabled:opacity-50 !border-none"
+            className=" !bg-transparent w-5 rounded-lg transition-colors disabled:opacity-50 !border-none"
             title="Refresh data"
           >
             <RefreshCw
-              className={`w-5 h-5 text-white ${loading ? "animate-spin" : ""}`}
+              className={`w-4 h-4 text-white ${loading ? "animate-spin" : ""}`}
             />
           </button>
 
           <button
             onClick={onClose}
-            className="p-1.5 !bg-transparent rounded-lg transition-colors !border-none"
+            className="!bg-transparent rounded-lg transition-colors !border-none"
             title="Close panel"
           >
-            <X className="w-5 h-5 text-white" />
+            <X className="w-4 h-4 text-white" />
           </button>
         </div>
       </div>
