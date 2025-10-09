@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ArrowRight } from "lucide-react";
 
 // Helper functions from DataPanel for color matching
 const getTableColor = (tableName: string) => {
@@ -68,8 +69,6 @@ interface ForeignKeyListProps {
   foreignKeys: ForeignKey[];
 }
 
-import { ArrowRight } from "lucide-react";
-
 export const ForeignKeyList: React.FC<ForeignKeyListProps> = ({
   foreignKeys,
 }) => {
@@ -78,8 +77,11 @@ export const ForeignKeyList: React.FC<ForeignKeyListProps> = ({
   return (
     <div className="fixed top-4 right-1 z-50 w-96 max-w-full">
       <div className="bg-white shadow-xl rounded-xl border border-gray-200">
-        <div className="px-2 py-2 border-b border-gray-100 flex items-center justify-between">
-          <span className="font-bold text-xl">Foreign Keys</span>
+        <div className="px-2 py-2 border-b border-gray-100 flex items-center justify-between bg-white">
+          <span className="font-bold text-xl flex items-center gap-2 text-gray-900">
+            <ArrowRight className="text-green-600" style={{ height: '1em', width: '1em' }} />
+            Foreign Keys
+          </span>
         </div>
         <ul className="divide-y divide-gray-100">
           {foreignKeys.map((fk) => {
@@ -88,7 +90,7 @@ export const ForeignKeyList: React.FC<ForeignKeyListProps> = ({
             return (
               <li key={fk.id}>
                 <button
-                  className="w-full flex items-center justify-between px-4 py-1.5 hover:bg-gray-50 focus:outline-none"
+                  className="w-full flex items-center justify-between px-4 py-1.5 hover:bg-gray-50 focus:outline-none bg-white text-gray-900"
                   onClick={() => setExpanded(expanded === fk.id ? null : fk.id)}
                   style={{ minHeight: 0 }}
                 >

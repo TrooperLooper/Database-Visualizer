@@ -1,6 +1,6 @@
 import React from "react";
 import { Handle, Position } from "@xyflow/react";
-import { Table, Key, Link } from "lucide-react";
+import { Table, Key, Link, ArrowLeft, ArrowRight } from "lucide-react";
 
 interface Column {
   column_name: string;
@@ -9,12 +9,20 @@ interface Column {
   column_default?: string;
 }
 
+interface Relationship {
+  source_table: string;
+  source_column: string;
+  target_table: string;
+  target_column: string;
+}
+
 interface TableNodeProps {
   data: {
     tableName: string;
     columns: Column[];
-    color: string;
     onClick: (tableName: string) => void;
+    relationships: Relationship[];
+    tableColorMap: Record<string, string>;
   };
 }
 
@@ -123,7 +131,7 @@ const getTableColor = (tableName: string) => {
 };
 
 const TableNode: React.FC<TableNodeProps> = ({ data }) => {
-  const { tableName, columns, onClick } = data;
+  const { tableName, columns, onClick, relationships, tableColorMap } = data;
   const color = getTableColor(tableName);
   const colorClasses = getColorClasses(color);
 
@@ -173,9 +181,22 @@ const TableNode: React.FC<TableNodeProps> = ({ data }) => {
 
       {/* Columns List */}
       <div className="p-4 space-y-2">
-        {columns.slice(0, 8).map((column, index) => {
+        {columns.slice(0, 8).map((column: Column, index: number) => {
           const isPrimaryKey = primaryKeyColumns.includes(column);
           const isForeignKey = foreignKeyColumns.includes(column);
+
+          // Outgoing FK: this column is a source_column in a relationship from this table
+          const outgoingFK = data.relationships.find(
+            (rel: Relationship) =>
+              rel.source_table === data.tableName &&
+              rel.source_column === column.column_name
+          );
+          // Incoming FK: this column is a target_column in a relationship to this table
+          const incomingFKs = data.relationships.filter(
+            (rel: Relationship) =>
+              rel.target_table === data.tableName &&
+              rel.target_column === column.column_name
+          );
 
           return (
             <div
@@ -211,7 +232,6 @@ const TableNode: React.FC<TableNodeProps> = ({ data }) => {
                   <Link className="w-3 h-3 text-blue-500 flex-shrink-0" />
                 )}
               </div>
-
               <div className="flex items-center gap-2">
                 <span className="text-gray-500 text-xs font-mono bg-gray-100 px-2 py-1 rounded">
                   {column.data_type}
@@ -219,6 +239,16 @@ const TableNode: React.FC<TableNodeProps> = ({ data }) => {
                 {column.is_nullable === "NO" && (
                   <span className="text-red-500 text-sm font-bold">*</span>
                 )}
+                {outgoingFK && (
+                  <ArrowRight className="w-3 h-3" style={{ color: colorClasses.border.replace('border-', '').replace('-500', '') }} />
+                )}
+                {incomingFKs.map((rel: Relationship, i: number) => {
+                  const senderColor = data.tableColorMap[rel.source_table] || "db-blue";
+                  const senderColorClass = getColorClasses(senderColor).border.replace('border-', '').replace('-500', '');
+                  return (
+                    <ArrowLeft key={i} className="w-3 h-3" style={{ color: senderColorClass }} />
+                  );
+                })}
               </div>
             </div>
           );

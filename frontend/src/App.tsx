@@ -122,6 +122,54 @@ function App() {
       tableColumns[column.table_name].push(column);
     });
 
+    // Build a color map for all tables
+    const getTableColor = (tableName: string) => {
+      if (
+        tableName.includes("user") ||
+        tableName.includes("customer") ||
+        tableName.includes("account")
+      ) {
+        return "db-blue";
+      }
+      if (
+        tableName.includes("order") ||
+        tableName.includes("payment") ||
+        tableName.includes("transaction")
+      ) {
+        return "db-green";
+      }
+      if (
+        tableName.includes("product") ||
+        tableName.includes("item") ||
+        tableName.includes("inventory")
+      ) {
+        return "db-orange";
+      }
+      if (
+        tableName.includes("category") ||
+        tableName.includes("tag") ||
+        tableName.includes("group")
+      ) {
+        return "db-purple";
+      }
+      if (
+        tableName.includes("log") ||
+        tableName.includes("session") ||
+        tableName.includes("config")
+      ) {
+        return "db-red";
+      }
+      const firstChar = tableName.charAt(0).toLowerCase();
+      const colorIndex = firstChar.charCodeAt(0) % 5;
+      const colors = ["db-blue", "db-orange", "db-green", "db-purple", "db-red"];
+      return colors[colorIndex];
+    };
+
+    const tableColorMap: Record<string, string> = {};
+    tables.forEach((t) => {
+      tableColorMap[t.table_name] = getTableColor(t.table_name);
+    });
+
     // 🎨 Create nodes for each table
     const schemaNodes: Node[] = tables.map((table, index: number) => {
       const tableColumnList = tableColumns[table.table_name] || [];
@@ -142,6 +190,8 @@ function App() {
           tableName: table.table_name,
           columns: tableColumnList,
           onClick: handleTableClick, // Add click handler
+          relationships: relationships,
+          tableColorMap: tableColorMap,
         },
       };
     });
@@ -277,7 +327,6 @@ function App() {
           </div>
         </div>
       </div>
-
 
       {/* Foreign Key List Card - Top right, always visible */}
       <div style={{ position: "absolute", top: 24, right: 12, zIndex: 50 }}>
