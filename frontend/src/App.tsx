@@ -20,6 +20,8 @@ import {
   LogOut,
 } from "lucide-react";
 import { api, type DatabaseConfig, type SchemaResponse } from "./services/api";
+import { ForeignKeyList, type ForeignKey } from "./components/ForeignKeyList";
+import { extractForeignKeys } from "./utils/foreignKeyUtils";
 import ConnectionForm from "./components/ConnectionForm";
 import DataPanel from "./components/DataPanel";
 import TableNode from "./components/TableNode";
@@ -50,6 +52,7 @@ const initialEdges: Edge[] = [
 function App() {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
+  const [foreignKeys, setForeignKeys] = useState<ForeignKey[]>([]);
 
   // 🔌 Connection state management
   const [isConnected, setIsConnected] = useState(false);
@@ -101,6 +104,7 @@ function App() {
 
       setNodes(schemaNodes);
       setEdges(schemaEdges);
+      setForeignKeys(extractForeignKeys(schemaData));
       setApiTestResult(
         `Loaded ${schemaData.tables.length} tables successfully!`
       );
@@ -153,14 +157,13 @@ function App() {
       };
     });
 
-    // 🔗 Create edges for relationships
+    // 🔗 Create edges for relationships (no label)
     const schemaEdges: Edge[] = relationships.map((rel, index: number) => ({
       id: `rel-${index}`,
       source: rel.source_table,
       target: rel.target_table,
       type: "animatedEdge",
       animated: false,
-      label: `${rel.source_column} → ${rel.target_column}`,
       style: {
         strokeWidth: 3,
         stroke: "#000000",
@@ -308,6 +311,11 @@ function App() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Foreign Key List Card - Top right, always visible */}
+      <div style={{ position: 'absolute', top: 24, right: 12, zIndex: 50 }}>
+        <ForeignKeyList foreignKeys={foreignKeys} />
       </div>
 
       {/* Main content area - Full screen */}
