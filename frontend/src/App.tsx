@@ -11,7 +11,7 @@ import {
   type Connection,
   Controls,
 } from "@xyflow/react";
-import { Database, Wifi, LogOut } from "lucide-react";
+import { Database, Wifi, LogOut, RefreshCw } from "lucide-react";
 import { api, type DatabaseConfig, type SchemaResponse } from "./services/api";
 import { ForeignKeyList, type ForeignKey } from "./components/ForeignKeyList";
 import { extractForeignKeys } from "./utils/foreignKeyUtils";
@@ -161,7 +161,13 @@ function App() {
       }
       const firstChar = tableName.charAt(0).toLowerCase();
       const colorIndex = firstChar.charCodeAt(0) % 5;
-      const colors = ["db-blue", "db-orange", "db-green", "db-purple", "db-red"];
+      const colors = [
+        "db-blue",
+        "db-orange",
+        "db-green",
+        "db-purple",
+        "db-red",
+      ];
       return colors[colorIndex];
     };
 
@@ -212,7 +218,13 @@ function App() {
     return { schemaNodes, schemaEdges };
   };
 
-  // 🚪 Handle disconnect
+  // � Handle refresh - reload schema without disconnecting
+  const handleRefresh = async () => {
+    console.log("🔄 Refreshing database schema...");
+    await loadDatabaseSchema();
+  };
+
+  // �🚪 Handle disconnect
   const handleDisconnect = async () => {
     try {
       await api.disconnect();
@@ -270,7 +282,7 @@ function App() {
           {/* Three column layout with fixed pixel widths */}
           <div
             className="grid gap-0"
-            style={{ gridTemplateColumns: "120px 300px 250px" }}
+            style={{ gridTemplateColumns: "120px 350px 250px" }}
           >
             {/* Column 1: Database symbol (triple size, 20px padding) */}
             <div className="flex flex-col justify-between h-full px-2">
@@ -297,13 +309,20 @@ function App() {
                   </div>
                 )}
 
+                {/* Refresh Button - placed after status message */}
+                <button
+                  onClick={handleRefresh}
+                  className="flex items-center justify-center gap-1 !bg-orange-500 hover:!bg-orange-600 !text-white !border-none !rounded-lg !px-3 !py-0.5 !text-xs !font-medium transition-colors"
+                >
+                  <RefreshCw className="w-3 h-3" />
+                  Refresh
+                </button>
+
                 {schemaError && (
                   <div className="text-xs !px-1.5 !py-0.5 bg-red-100 rounded border border-red-200 text-red-700">
                     {schemaError}
                   </div>
                 )}
-
-                {/* ...orange action buttons removed... */}
               </div>
             </div>
 
@@ -318,7 +337,7 @@ function App() {
 
               <button
                 onClick={handleDisconnect}
-                className="flex items-center justify-center gap-1 !px-1.5 !py-0.5 !bg-red-500 !text-white rounded hover:!bg-red-600 transition-colors text-xs font-medium !border-none self-center mb-3.5"
+                className="flex items-center justify-center gap-1 !px-3 !py-0.5 !bg-red-500 !text-white !rounded-lg hover:!bg-red-600 !transition-colors !text-xs !font-medium !border-none self-center mb-2.5"
               >
                 <LogOut className="w-3 h-3" />
                 Disconnect
