@@ -8,7 +8,7 @@ A web app for visualizing PostgreSQL database schemas, relationships, and data i
 
 ## Why This Project?
 
-As a backend developer student, I often hit personal roadblocks working with PostgreSQL databases. Being a visual learner, I found it difficult to picture foreign key relationships, table structures, and actual data values. Existing tools like PGAdmin felt clunky and unintuitive, and I couldn't find any alternatives that truly fit my needs.
+As a fullstack developer student, I often hit personal roadblocks working with PostgreSQL databases. Being a visual learner, I found it difficult to picture foreign key relationships, table structures, and actual data values. Existing tools like PGAdmin felt clunky and unintuitive, and I couldn't find any alternatives that truly fit my needs.
 
 So, I created this web app—with the help of GitHub Copilot—to solve a real problem: to visually see, in real time, how my databases work. Now, I can instantly understand which foreign keys relate (with color-coded arrows), how tables connect (flowcharts with color-coded tables), and inspect table data with a single click.
 
