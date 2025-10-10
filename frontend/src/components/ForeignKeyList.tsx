@@ -79,7 +79,10 @@ export const ForeignKeyList: React.FC<ForeignKeyListProps> = ({
       <div className="bg-white shadow-xl rounded-xl border border-gray-200">
         <div className="px-2 py-2 border-b border-gray-100 flex items-center justify-between bg-white">
           <span className="font-bold text-xl flex items-center gap-2 text-gray-900">
-            <ArrowRight className="text-green-600" style={{ height: '1em', width: '1em' }} />
+            <ArrowRight
+              className="text-green-600"
+              style={{ height: "1em", width: "1em" }}
+            />
             Foreign Keys
           </span>
         </div>

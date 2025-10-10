@@ -131,7 +131,7 @@ const getTableColor = (tableName: string) => {
 };
 
 const TableNode: React.FC<TableNodeProps> = ({ data }) => {
-  const { tableName, columns, onClick, relationships, tableColorMap } = data;
+  const { tableName, columns, onClick } = data;
   const color = getTableColor(tableName);
   const colorClasses = getColorClasses(color);
 
@@ -240,13 +240,27 @@ const TableNode: React.FC<TableNodeProps> = ({ data }) => {
                   <span className="text-red-500 text-sm font-bold">*</span>
                 )}
                 {outgoingFK && (
-                  <ArrowRight className="w-3 h-3" style={{ color: colorClasses.border.replace('border-', '').replace('-500', '') }} />
+                  <ArrowRight
+                    className="w-3 h-3"
+                    style={{
+                      color: colorClasses.border
+                        .replace("border-", "")
+                        .replace("-500", ""),
+                    }}
+                  />
                 )}
                 {incomingFKs.map((rel: Relationship, i: number) => {
-                  const senderColor = data.tableColorMap[rel.source_table] || "db-blue";
-                  const senderColorClass = getColorClasses(senderColor).border.replace('border-', '').replace('-500', '');
+                  const senderColor =
+                    data.tableColorMap[rel.source_table] || "db-blue";
+                  const senderColorClass = getColorClasses(senderColor)
+                    .border.replace("border-", "")
+                    .replace("-500", "");
                   return (
-                    <ArrowLeft key={i} className="w-3 h-3" style={{ color: senderColorClass }} />
+                    <ArrowLeft
+                      key={i}
+                      className="w-3 h-3"
+                      style={{ color: senderColorClass }}
+                    />
                   );
                 })}
               </div>

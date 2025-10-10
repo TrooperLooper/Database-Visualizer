@@ -161,7 +161,13 @@ function App() {
       }
       const firstChar = tableName.charAt(0).toLowerCase();
       const colorIndex = firstChar.charCodeAt(0) % 5;
-      const colors = ["db-blue", "db-orange", "db-green", "db-purple", "db-red"];
+      const colors = [
+        "db-blue",
+        "db-orange",
+        "db-green",
+        "db-purple",
+        "db-red",
+      ];
       return colors[colorIndex];
     };
 
