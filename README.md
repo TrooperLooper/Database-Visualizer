@@ -12,6 +12,67 @@ As a fullstack developer student, I often hit personal roadblocks working with P
 
 So, I created this web app—with the help of GitHub Copilot—to solve a real problem: to visually see, in real time, how my databases work. Now, I can instantly understand which foreign keys relate (with color-coded arrows), how tables connect (flowcharts with color-coded tables), and inspect table data with a single click.
 
+## Getting Started
+
+### Prerequisites
+
+- Node.js installed on your machine
+- Docker Desktop running
+- PostgreSQL (will be provided via Docker)
+
+### Quick Start
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd DBviz
+   ```
+
+2. **Start the Backend Server**
+
+   ```bash
+   cd backend
+   npm install  # if needed
+   npm run dev
+   ```
+
+   The backend will run on `http://localhost:3001`
+
+3. **Start the Frontend Server** (in a new terminal)
+
+   ```bash
+   cd frontend
+   npm install  # if needed
+   npm run dev
+   ```
+
+   The frontend will run on `http://localhost:5173`
+
+4. **Start the Database** (in a new terminal)
+
+   ```bash
+   cd /path/to/DBviz
+   docker-compose up
+   ```
+
+   PostgreSQL will run on port `5433`
+
+5. **Open the app** in your browser at `http://localhost:5173`
+
+6. **Connect to Database**: Use these default connection details:
+   - Host: `localhost`
+   - Port: `5433`
+   - Database: `test_db`
+   - Username: `root`
+   - Password: `root`
+
+### Important Notes
+
+- Make sure you're in the correct directory when running each command
+- The backend must be started before the frontend for proper API connectivity
+- Docker Desktop must be running before starting the database
+
 ## Tech Stack & Choices
 
 **Frontend:**
@@ -89,13 +150,6 @@ So, I created this web app—with the help of GitHub Copilot—to solve a real p
 - Visual tools makes learning and working with databases much easier for visual thinkers.
 - Building your own tools can be a great way to overcome learning roadblocks.
 - Copilot when used with care and strict guidance and supervision, has good potential as a powerful assistant for planning, scaffolding, and iterating on production of assitive technology. In no means is it an replacement for a human developer.
-
-## Getting Started
-
-1. **Clone the repository**
-2. **Set up the backend and frontend** (see `copilot-instructions.md` for details)
-3. **Configure your PostgreSQL connection**
-4. **Start both servers and open the app in your browser**
 
 ## Credits
 
