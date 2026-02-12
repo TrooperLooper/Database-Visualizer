@@ -1,8 +1,14 @@
+
 # Database Visualizer
+
 
 ![alt text](CC-BYNC.png)
 
-A web app for visualizing PostgreSQL database schemas, relationships, and data in real time. Built to help backend developers and visual learners understand and explore their databases with clarity and ease.
+
+An automated web app for instantly generating a visual Entity-Relationship Diagram (ERD) from any PostgreSQL database. Designed for students, educators, and developers, it provides a fast, intuitive way to get a complete overview of your database structure—no matter how large or complex. Perfect for learning, teaching, or quickly understanding unfamiliar databases, the app visualizes tables, foreign key relationships, and real data in real time, making it easy to explore and comprehend your database at a glance.
+
+This project was also an experiment in AI co-programming, leveraging GitHub Copilot to assist with planning, scaffolding, and iterative development.
+
 
 ![alt text](Screenshot.png)
 
