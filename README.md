@@ -4,7 +4,7 @@
 
 An automated web app for instantly generating a visual Entity-Relationship Diagram (ERD) from any PostgreSQL database. Designed for students, educators, and developers, it provides a fast, intuitive way to get a complete overview of your database structure—no matter how large or complex. Perfect for learning, teaching, or quickly understanding unfamiliar databases, the app visualizes tables, foreign key relationships, and real data in real time, making it easy to explore and comprehend your database at a glance.
 
-This project was also an experiment in AI co-programming, leveraging GitHub Copilot to assist with planning, scaffolding, and iterative development. Learning about limitations and best practices for using AI tools in software development was a key part of the process.
+This project was also an experiment in AI pair-programming, leveraging GitHub Copilot to assist with planning, scaffolding, and iterative development. Learning about limitations and best practices for using AI tools in software development was a key part of the process.
 
 ![alt text](Screenshot.png)
 
